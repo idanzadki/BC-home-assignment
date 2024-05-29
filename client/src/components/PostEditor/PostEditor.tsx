@@ -1,5 +1,5 @@
 import "./styles.css";
 
 export const PostEditor: React.FC = () => {
-  return null;
+  return <div>Post Editor</div>;
 };
