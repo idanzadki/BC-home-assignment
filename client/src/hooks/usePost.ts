@@ -3,7 +3,7 @@ import { useModal } from "../components/modal";
 import { PostData, UserData } from "../types";
 import { addNewPost, deletePost, getAllPosts, updatePost } from "../services/postServices";
 
-export const usePost = (user?: UserData) => {
+export const usePost = (user?: UserData | null) => {
 
     const [posts, setPosts] = useState<PostData[]>([]);
     const { openModal, closeModal } = useModal();
@@ -41,12 +41,9 @@ export const usePost = (user?: UserData) => {
             openModal('error', { title: 'Error', text: `${error}` })
         }
 
-
-
     }, [setPosts, user])
 
     const handleDeletePost = useCallback(async (post?: PostData) => {
-        console.log('Handle Delete Post: ', post);
         if (post) {
             const res = await deletePost(post)
             console.log('d: ', res);
@@ -57,25 +54,16 @@ export const usePost = (user?: UserData) => {
 
 
     const handleUpdatePost = useCallback(async (update: PostData) => {
-
-        console.log('Update: ', update);
-
         const res = await (await updatePost(update)).json()
         console.log('Res: ', res);
         if (res) {
-
             setPosts(res)
             closeModal()
         }
-
-
-
     }, [setPosts, posts])
 
 
     const handleLike = useCallback(async (postId: number) => {
-
-        console.log('Handle Like: ', postId);
 
         let newOb: PostData | null = posts.find(i => i.id === postId) || null
         if (newOb && user) {
@@ -90,7 +78,6 @@ export const usePost = (user?: UserData) => {
             const res = await (await updatePost(newOb)).json()
             res && setPosts(res)
         }
-
 
     }, [posts, setPosts, user])
 

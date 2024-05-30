@@ -5,7 +5,7 @@ import { styles } from "./styles";
 import { Layout } from "../../components/layout";
 import { PostEditor, UserAvatar } from "../../components";
 import { usePost } from "../../hooks/usePost";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PostData } from "../../types";
 import { Delete, Edit, ThumbUp } from "@mui/icons-material";
 
@@ -21,18 +21,13 @@ const Home = () => {
   } = usePost(user);
   const { openModal } = useModal();
 
-  const PostContent = ({ post }: { post?: PostData }) => (
-    <Box>{post && post.content}</Box>
-    // <div
-    //   style={{
-    //     // border: "1px solid black",
-    //     color: "gray",
-    //     padding: 10,
-    //     // textAlign: "center",
-    //   }}
-    // >
-    // </div>
-  );
+  const sorted = useMemo(() => {
+    return posts.sort((a, b) => {
+      if (a.date < b.date) return -1;
+      else if (a.date > b.date) return 1;
+      return 0;
+    });
+  }, [posts]);
 
   const PostImage = ({ url }: { url?: string }) => {
     return url ? (
@@ -170,9 +165,6 @@ const Home = () => {
       setError("No Users");
     } else if (error) {
       console.log("Main Arror");
-    } else {
-      // console.log("Main Users: ", users);
-      // console.log("User: ", user);
     }
   }, [error, users, user, setError]);
 
@@ -189,7 +181,7 @@ const Home = () => {
       ) : (
         <Box sx={styles.posts_wrapper}>
           {posts.length > 0 ? (
-            posts.map((i) => (
+            sorted.map((i) => (
               <div
                 key={i.id}
                 style={{
@@ -203,7 +195,7 @@ const Home = () => {
               >
                 <PostHeader post={i} />
                 {i.imageUrl && <PostImage url={i.imageUrl} />}
-                <PostContent post={i} />
+                <Box>{i.content}</Box>
                 <PostTools post={i} />
               </div>
             ))
