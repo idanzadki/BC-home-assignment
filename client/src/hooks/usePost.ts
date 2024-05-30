@@ -59,8 +59,16 @@ export const usePost = () => {
     }, [])
 
     const handleUpdatePost = useCallback((updatePost?: PostData) => {
+        if (updatePost) {
+            const newList = posts.map(i =>
+                (i.id === updatePost.id) ?
+                    updatePost : i
+            )
+            setPosts(newList)
+            closeModal()
+        }
 
-    }, [])
+    }, [setPosts, posts])
 
 
     const handleLike = useCallback(async (postId: number) => {

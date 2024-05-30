@@ -12,7 +12,13 @@ import { Delete, Edit, ThumbUp } from "@mui/icons-material";
 const Home = () => {
   const [error, setError] = useState<boolean | string>(false);
   const { users = false, user, handleSwitchUser } = useUser();
-  const { handleAddPost, handleLike, handleDeletePost, posts } = usePost();
+  const {
+    handleAddPost,
+    handleLike,
+    handleDeletePost,
+    handleUpdatePost,
+    posts,
+  } = usePost();
   const { openModal } = useModal();
 
   const PostContent = ({ post }: { post?: PostData }) => (
@@ -55,7 +61,15 @@ const Home = () => {
           <div style={{ display: "flex" }}>
             <IconButton
               onClick={() => {
-                console.log("onEdit: ", post);
+                openModal("default", {
+                  children: (
+                    <PostEditor
+                      user={user}
+                      post={post}
+                      onSubmit={handleUpdatePost}
+                    />
+                  ),
+                });
               }}
             >
               <Edit color="action" />

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Box, Button, Card, Input } from "@mui/material";
 import { PostData, UserData } from "../../types";
 import { useModal } from "../modal";
@@ -50,11 +50,22 @@ export const PostEditor = ({
     [setContent]
   );
 
+  useEffect(() => {
+    console.log("post: ", post);
+  }, []);
+
   return (
     <Box sx={{ direction: "ltr" }}>
-      <Box sx={{ border: "1px solid black" }}>{user?.id || "No User"}</Box>
+      {/* <Box sx={{ border: "1px solid black" }}>{user?.id || "No User"}</Box> */}
       <Box sx={{ justifyContent: "center", alignItems: "center" }}>
-        <Card sx={{ border: "1px solid black", height: 400, width: 400 }}>
+        <Card
+          sx={{
+            border: "1px solid black",
+            height: 400,
+            maxWidth: 400,
+            margin: "10px",
+          }}
+        >
           {imgPreview ? (
             <img
               style={{ height: 400, width: 400 }}
@@ -65,21 +76,26 @@ export const PostEditor = ({
             <Box />
           )}
         </Card>
-        <Box>Image Url</Box>
-        <Input
-          // title="Image Url"
-          type="text"
-          placeholder="Select Image url"
+
+        <Box
           sx={{
-            // display: "flex",
-            // border: "1px solid black",
-            // borderRadius: 5,
-            padding: "5px",
-            margin: "5px",
+            display: "flex",
+            // justifyContent: "center",
+            alignItems: "center",
           }}
-          value={imgUrl}
-          onChange={handleImage}
-        />
+        >
+          <Box>Image Url:</Box>
+          <Input
+            type="text"
+            placeholder="Select Image url"
+            sx={{
+              padding: "5px",
+              margin: "5px",
+            }}
+            value={imgUrl}
+            onChange={handleImage}
+          />
+        </Box>
       </Box>
       <Button onClick={handleImagePreview}>Preview</Button>
       <textarea
@@ -99,7 +115,6 @@ export const PostEditor = ({
       />
       <Button
         onClick={() => {
-          console.log("Submit Post: ", post?.id);
           onSubmit && onSubmit({ ...post, content, imageUrl: imgUrl });
         }}
       >
