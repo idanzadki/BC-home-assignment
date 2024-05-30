@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useModal } from "../components/modal";
 import { PostData, UserData } from "../types";
-import { addNewPost } from "../services/postServices";
+import { addNewPost, getAllPosts } from "../services/postServices";
 
 export const usePost = () => {
 
@@ -12,22 +12,34 @@ export const usePost = () => {
 
     const handleGetPosts = useCallback(async () => {
 
-    }, [])
+        try {
+
+            const posts = await getAllPosts()
+            // console.log('Posts: ', posts);
+            setPosts(posts)
+            return posts
+
+        } catch (error) {
+            console.log('Get Posts Error: ', error);
+            return false
+        }
+
+    }, [setPosts])
 
     const handleAddPost = useCallback(async (post: PostData) => {
         try {
             const { id, userId, ...ob } = post
             console.log('ID: ,USERiD: ', id, userId);
 
-            if (userId < 0) throw Error('No User Exist')
+            // if (userId < 0) throw Error('No User Exist')
 
             if (id < 0) {
                 console.log('OB: ', ob);
-                const newPost = await addNewPost(ob)
-                if (newPost) {
-                    console.log('New: ', newPost);
-                    closeModal()
-                }
+                // const newPost = await addNewPost(ob)
+                // if (newPost) {
+                //     console.log('New: ', newPost);
+                //     closeModal()
+                // }
             }
 
         }
@@ -58,7 +70,7 @@ export const usePost = () => {
 
 
     useEffect(() => {
-
+        handleGetPosts()
     }, [])
 
     return {

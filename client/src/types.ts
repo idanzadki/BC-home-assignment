@@ -4,6 +4,7 @@ export type PostData = {
   content: string;
   date: string;
   imageUrl?: string;
+  likes?: number[]
 };
 
 export type UserData = {

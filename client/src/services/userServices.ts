@@ -1,13 +1,19 @@
 
 export const getAllUsers = async () => {
 
-    const res = await fetch("http://127.0.0.1:3000/api/users").catch(err => {
-        throw err
-    })
-    if (res) {
-        const users = await res.json()
-        if (users)
+    try {
+        const res = await fetch("http://127.0.0.1:3000/api/users")
+        if (res) {
+            const users = await res.json()
+            if (users) {
+                return users
+            }
             return res && res
+        }
+    } catch (error) {
+        console.log('Errrr: ', error);
+        return false
+
     }
     // console.log('Res: ', res);
 

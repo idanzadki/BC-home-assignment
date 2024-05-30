@@ -20,7 +20,10 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({
   onSwitchUser,
-  user,
+  user = {
+    id: 999,
+    name: "New User",
+  },
   onSubmit,
 }) => {
   const { openModal, closeModal } = useModal();
@@ -33,7 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
             {user?.avatar ? (
               <UserAvatar user={user} className="user-avatar" />
             ) : (
-              <div>{user?.name}</div>
+              <div>{user?.name || "No User"}</div>
             )}
           </IconButton>
         </Tooltip>

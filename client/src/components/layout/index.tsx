@@ -9,15 +9,23 @@ interface LayoutProps {
   children?: ReactNode;
   user?: UserData | null;
   onNewPost: (post: PostData) => void;
+  onSwitchUser: () => void;
 }
 
-export const Layout = ({ children, user, onNewPost }: LayoutProps) => {
+export const Layout = ({
+  children,
+  user,
+  onNewPost,
+  onSwitchUser,
+}: LayoutProps) => {
   const { openModal } = useModal();
 
   return (
     <Box>
       <Header
+        user={user}
         onSubmit={onNewPost}
+        onSwitchUser={onSwitchUser}
         // openPostEditor={() => {
         //   console.log("Open Editor");
         //   openModal("default", {
