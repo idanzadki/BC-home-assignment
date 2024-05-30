@@ -5,9 +5,6 @@ import { useModal } from "../modal";
 import "./styles.css";
 import { Image } from "@mui/icons-material";
 
-const nadinePic =
-  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fih1.redbubble.net%2Fimage.3118230836.9249%2Fflat%2C750x%2C075%2Cf-pad%2C750x1000%2Cf8f8f8.jpg&f=1&nofb=1&ipt=53afd58b7e63952f2bef953f2f630de1d383d36e14ca0e1fd4f863a09931079a&ipo=images";
-
 export const PostEditor = ({
   post = {
     id: 1,
