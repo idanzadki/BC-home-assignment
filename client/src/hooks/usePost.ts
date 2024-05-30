@@ -27,7 +27,7 @@ export const usePost = (user?: UserData | null) => {
             if (user) {
 
                 const newPost: Omit<PostData, 'id'> = { ...post, userId: user?.id }
-                const n = await (await addNewPost(newPost)).json()
+                const n = await addNewPost(newPost)
                 if (n) {
                     setPosts(n)
                     closeModal()
@@ -46,21 +46,26 @@ export const usePost = (user?: UserData | null) => {
     const handleDeletePost = useCallback(async (post?: PostData) => {
         if (post) {
             const res = await deletePost(post)
-            console.log('d: ', res);
+            // console.log('d: ', res);
             res && setPosts(res)
-            closeModal()
+            if (res) {
+                setPosts(res)
+                closeModal()
+            }
         }
     }, [setPosts])
 
 
     const handleUpdatePost = useCallback(async (update: PostData) => {
-        const res = await (await updatePost(update)).json()
-        console.log('Res: ', res);
+        console.log('Update: ', update);
+
+        const res: PostData[] = await updatePost(update)
         if (res) {
+            console.log(' Update Res: ', res.find(i => i.id === update.id));
             setPosts(res)
             closeModal()
         }
-    }, [setPosts, posts])
+    }, [setPosts])
 
 
     const handleLike = useCallback(async (postId: number) => {
@@ -75,7 +80,7 @@ export const usePost = (user?: UserData | null) => {
             }
             else
                 newOb = { ...newOb, likes: [user.id] }
-            const res = await (await updatePost(newOb)).json()
+            const res = await updatePost(newOb)
             res && setPosts(res)
         }
 

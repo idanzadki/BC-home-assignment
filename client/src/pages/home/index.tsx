@@ -23,8 +23,10 @@ const Home = () => {
 
   const sorted = useMemo(() => {
     return posts.sort((a, b) => {
-      if (a.date < b.date) return -1;
-      else if (a.date > b.date) return 1;
+      const aDate = new Date(a.date);
+      const bDate = new Date(b.date);
+      if (aDate < bDate) return 1;
+      else if (aDate > bDate) return -1;
       return 0;
     });
   }, [posts]);
@@ -180,7 +182,7 @@ const Home = () => {
         <Box>Error {error}</Box>
       ) : (
         <Box sx={styles.posts_wrapper}>
-          {posts.length > 0 ? (
+          {sorted.length > 0 ? (
             sorted.map((i) => (
               <div
                 key={i.id}

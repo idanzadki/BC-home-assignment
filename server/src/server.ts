@@ -53,18 +53,32 @@ app.get("/api/users", (req, res) => {
   })
 });
 
+
+
 app.post("/api/posts", (req: Request, res) => {
   let post = req.body
+  console.log('Add: ', post);
 
   try {
     const p = path.join(__dirname.replace('src', ''), "/db/posts.json");
 
     readAllPosts((posts: any[]) => {
-      let id = 1000
-      if (posts.length > 0)
-        id = posts[posts.length - 1].id + 1
-      const n = { id: id, ...post }
+
+
+      let id = posts.length + 1
+      const t = posts.map(i => i.id)
+      console.log('t: ', t);
+      const postMax = Math.max(...t)
+      console.log('id: ', postMax);
+      id = Math.max(id, postMax)
+      if (id === postMax) {
+        id += 1
+      }
+      console.log('new Id: ', id, postMax);
+      const n = { ...post, id }
       const add = [...posts, n]
+
+
       writeFile(p, JSON.stringify(add), (saveRes) => {
         console.log('Save Res: ', saveRes);
         res.send(add)
@@ -78,12 +92,13 @@ app.post("/api/posts", (req: Request, res) => {
 
 app.put("/api/posts", (req: Request, res) => {
   let post = req.body
+  console.log('Update: ', post);
 
   try {
     readAllPosts((posts: any[]) => {
       const old = posts.find(i => `${i.id}` === `${post.id}`)
       const up = { ...old, ...post }
-      const upList = posts.map(i => `${i.id}` === `${up.id}` ? up : i)
+      const upList = posts.map(i => i.id === up.id ? up : i)
       let p = path.join(__dirname.replace('src', ''), "/db/posts.json");
       writeFile(p, JSON.stringify(upList), cb => { })
       res.send(upList)

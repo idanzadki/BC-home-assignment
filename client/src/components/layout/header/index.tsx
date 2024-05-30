@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Box,
   IconButton,
   Toolbar,
   Tooltip,
@@ -15,7 +16,7 @@ import { PostEditor } from "../../PostEditor";
 type HeaderProps = {
   onSubmit: (post: PostData) => void;
   onSwitchUser?: () => void;
-  user?: UserData | null;
+  user?: UserData;
 };
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,11 +34,22 @@ export const Header: React.FC<HeaderProps> = ({
       <Toolbar disableGutters className="app-toolbar">
         <Tooltip title="Switch User">
           <IconButton onClick={onSwitchUser}>
-            {user?.avatar ? (
-              <UserAvatar user={user} className="user-avatar" />
-            ) : (
-              <div>{user?.name || "No User"}</div>
-            )}
+            <UserAvatar user={user} className="user-avatar" />
+            <Box
+              sx={{
+                position: "absolute",
+                fontWeight: "bold",
+                color: "black",
+                fontSize: 25,
+              }}
+            >
+              {(user &&
+                !user.avatar &&
+                `${user.name.split(" ")[0][0] || ""}${
+                  user?.name.split(" ")[1][0]
+                }`) ||
+                ""}
+            </Box>
           </IconButton>
         </Tooltip>
         <div>

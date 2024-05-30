@@ -117,7 +117,12 @@ export const PostEditor = ({
         onClick={() => {
           if (user) {
             onSubmit &&
-              onSubmit({ ...post, id: user?.id, content, imageUrl: imgUrl });
+              onSubmit({
+                ...post,
+                userId: user?.id,
+                content,
+                imageUrl: imgUrl,
+              });
           }
         }}
       >
