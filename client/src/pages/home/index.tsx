@@ -4,25 +4,29 @@ import { useModal } from "../../components/modal";
 import { styles } from "./styles";
 import { Layout } from "../../components/layout";
 import { PostEditor } from "../../components";
+import { usePost } from "../../hooks/usePost";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const {
-    users,
-    posts,
-    user,
-    handleAddPost,
-    handleSwitchUser,
-    handleLike,
-    handleUpdatePost,
-    handleDeletePost,
-  } = useUser();
+  const { users, user, handleSwitchUser } = useUser();
+  const [error, setError] = useState<boolean | string>("Error");
+  const { handleAddPost } = usePost();
   const { openModal } = useModal();
 
-  const openEditor = () => openModal("default", { children: <PostEditor /> });
+  useEffect(() => {
+    console.log("Error: ", error);
+  }, [error]);
 
   return (
-    <Layout>
-      <Box sx={styles.posts_wrapper}>Home Page</Box>
+    <Layout onNewPost={handleAddPost}>
+      {error ? (
+        <Box>Error {error}</Box>
+      ) : (
+        <Box sx={styles.posts_wrapper}>
+          <Box>Home Page</Box>
+          <Box>PostList</Box>
+        </Box>
+      )}
     </Layout>
   );
 };
