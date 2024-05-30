@@ -115,7 +115,10 @@ export const PostEditor = ({
       />
       <Button
         onClick={() => {
-          onSubmit && onSubmit({ ...post, content, imageUrl: imgUrl });
+          if (user) {
+            onSubmit &&
+              onSubmit({ ...post, id: user?.id, content, imageUrl: imgUrl });
+          }
         }}
       >
         Save

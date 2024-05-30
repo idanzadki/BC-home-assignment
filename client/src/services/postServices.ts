@@ -1,3 +1,5 @@
+import { PostData } from "../types";
+
 export const updatePost = async (post: PostData) => {
 
     const res = await fetch("http://127.0.0.1:3000/api/posts", {
@@ -13,7 +15,7 @@ export const updatePost = async (post: PostData) => {
     return res && res
 }
 
-export const addNewPost = async (post: PostData) => {
+export const addNewPost = async (post: Omit<PostData, 'id'>) => {
 
     const res = await fetch("http://127.0.0.1:3000/api/posts", {
         method: "post",

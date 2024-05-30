@@ -18,7 +18,7 @@ const Home = () => {
     handleDeletePost,
     handleUpdatePost,
     posts,
-  } = usePost();
+  } = usePost(user);
   const { openModal } = useModal();
 
   const PostContent = ({ post }: { post?: PostData }) => (
@@ -93,8 +93,11 @@ const Home = () => {
         <Tooltip
           title={post?.likes
             ?.map((i) => {
-              const ob = users.find((j) => j.id === i);
-              return ob?.name || i;
+              if (users) {
+                const ob = users.find((j) => j.id === i);
+
+                return ob?.name || i;
+              }
             })
             .join(`${" , "}`)}
         >
@@ -169,7 +172,7 @@ const Home = () => {
       console.log("Main Arror");
     } else {
       // console.log("Main Users: ", users);
-      console.log("User: ", user);
+      // console.log("User: ", user);
     }
   }, [error, users, user, setError]);
 
