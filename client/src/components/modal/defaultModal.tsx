@@ -3,23 +3,20 @@ import { styles } from "./styles";
 import { useModal } from ".";
 import { PostData, UserData } from "../../types";
 import { PostEditor } from "../PostEditor";
+import { ReactNode } from "react";
 
-const DefaultModal = ({
-  item,
-  user = { id: -1, name: "No User" },
-  onSubmit,
-}: {
-  item?: PostData;
-  user?: UserData | null;
-  onSubmit?: (item: PostData) => void;
-}) => {
+interface DefaultModalProps {
+  children?: ReactNode;
+}
+
+const DefaultModal = ({ children }: DefaultModalProps) => {
   const { closeModal } = useModal();
   return (
     <Modal sx={styles.modal} open>
       <form>
         <Box sx={styles.modalForm}>
           <Button onClick={closeModal}>X</Button>
-          <PostEditor onSubmit={onSubmit} user={user} post={item} />
+          {children}
         </Box>
       </form>
     </Modal>

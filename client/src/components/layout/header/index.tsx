@@ -6,9 +6,9 @@ import {
   Typography,
 } from "@mui/material";
 import { AddOutlined } from "@mui/icons-material";
-import { UserData } from "../../types";
 import "./styles.css";
-import { UserAvatar } from "../UserAvatar";
+import { UserAvatar } from "../../UserAvatar";
+import { UserData } from "../../../types";
 
 type HeaderProps = {
   openPostEditor: () => void;
@@ -21,7 +21,11 @@ export const Header: React.FC<HeaderProps> = ({ openPostEditor }) => {
     <AppBar position="static">
       <Toolbar disableGutters className="app-toolbar">
         <Tooltip title="Switch User">
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              console.log("Switch User");
+            }}
+          >
             <UserAvatar user={user} className="user-avatar" />
           </IconButton>
         </Tooltip>
