@@ -18,11 +18,16 @@ const ErrorModal = ({
     <Modal sx={styles.modal} open>
       <form>
         <Box sx={styles.modalForm}>
-          {/* <div>{item?.userId}</div> */}
           <h3>{title}</h3>
           <h2>{text}</h2>
-          <Button onClick={closeModal}>Cancel</Button>
-          <Button onClick={onSubmit}>OK</Button>
+          <Button
+            onClick={() => {
+              onSubmit && onSubmit();
+              closeModal();
+            }}
+          >
+            OK
+          </Button>
         </Box>
       </form>
     </Modal>

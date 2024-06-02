@@ -11,7 +11,6 @@ export const updatePost = async (post: PostData) => {
         body: JSON.stringify(post),
     })
     const posts = await res.json()
-    console.log('Update: ', posts);
 
 
     return posts && posts
@@ -28,7 +27,6 @@ export const addNewPost = async (post: Omit<PostData, 'id'>) => {
         body: JSON.stringify(post),
     })
     const posts = await res.json()
-    console.log('Res: ', posts);
 
     return posts && posts
 }
@@ -50,7 +48,6 @@ export const deletePost = async (post: PostData) => {
 export const getAllPosts = async () => {
 
     const res = await (await fetch("http://127.0.0.1:3000/api/posts")).json()
-    // console.log('Res: ', res);
 
     return res && res
 }

@@ -20,8 +20,6 @@ export const allPosts = (req: Request, res: Response) => readAllPosts((cbRes) =>
 
 export const addNewPost = (req: Request, res: Response) => {
     let post = req.body
-    console.log('Post: ', post);
-
 
     try {
 
@@ -30,20 +28,15 @@ export const addNewPost = (req: Request, res: Response) => {
 
             let id = posts.length + 1
             const t = posts.map(i => i.id)
-            console.log('t: ', t);
             const postMax = Math.max(...t)
-            console.log('id: ', postMax);
             id = Math.max(id, postMax)
             if (id === postMax) {
                 id += 1
             }
-            console.log('new Id: ', id, postMax);
             const n = { ...post, id }
             const add = [...posts, n]
 
-
             writeFile(p, JSON.stringify(add), (saveRes) => {
-                console.log('Save Res: ', saveRes);
                 res.send(add)
             });
         })
@@ -55,14 +48,10 @@ export const addNewPost = (req: Request, res: Response) => {
 
 export const updatePost = (req: Request, res: Response) => {
     let post = req.body
-    console.log('Update: ', post);
-
     try {
         readAllPosts((posts: any[]) => {
             const old = posts.find(i => `${i.id}` === `${post.id}`)
-            console.log('Old: ', old);
-
-            const up = { ...old, ...post }
+            const up = { ...old, ...post, updated_at: new Date().toString() }
             const upList = posts.map(i => i.id === up.id ? up : i)
             writeFile(p, JSON.stringify(upList), cb => { })
             res.send(upList)
@@ -75,7 +64,6 @@ export const updatePost = (req: Request, res: Response) => {
 
 export const deletePost = (req: Request, res: Response) => {
     const post = req.params
-    console.log('Del: ', post);
 
     try {
         readAllPosts((posts: any[]) => {

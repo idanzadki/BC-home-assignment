@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { ReactNode } from "react";
 import { Header } from "./header";
 import { useModal } from "../modal";
-import { PostEditor } from "../PostEditor";
 import { PostData, UserData } from "../../types";
 
 interface LayoutProps {
@@ -23,17 +22,7 @@ export const Layout = ({
   return (
     <Box>
       {user && (
-        <Header
-          user={user}
-          onSubmit={onNewPost}
-          onSwitchUser={onSwitchUser}
-          // openPostEditor={() => {
-          //   console.log("Open Editor");
-          //   openModal("default", {
-          //     children: <PostEditor user={user} />,
-          //   });
-          // }}
-        />
+        <Header user={user} onSubmit={onNewPost} onSwitchUser={onSwitchUser} />
       )}
       {children}
     </Box>

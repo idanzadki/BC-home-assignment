@@ -1,13 +1,13 @@
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { useUser } from "../../hooks/useUser";
-import { useModal } from "../../components/modal";
-import { styles } from "./styles";
-import { Layout } from "../../components/layout";
-import { PostEditor, UserAvatar } from "../../components";
-import { usePost } from "../../hooks/usePost";
 import { useEffect, useMemo, useState } from "react";
-import { PostData } from "../../types";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit, ThumbUp } from "@mui/icons-material";
+import { PostEditor, UserAvatar } from "../../components";
+import { Layout } from "../../components/layout";
+import { useModal } from "../../components/modal";
+import { useUser } from "../../hooks/useUser";
+import { usePost } from "../../hooks/usePost";
+import { PostData } from "../../types";
+import { styles } from "./styles";
 
 const Home = () => {
   const [error, setError] = useState<boolean>(false);
@@ -18,10 +18,7 @@ const Home = () => {
     handleSwitchUser,
   } = useUser({
     error,
-    onError: (error) => {
-      console.log("Users Error: ", error);
-      setError(true);
-    },
+    onError: (error) => setError(true),
   });
   const {
     handleAddPost,
@@ -50,13 +47,7 @@ const Home = () => {
 
   const PostImage = ({ url }: { url?: string }) => {
     return url ? (
-      // <img width={600} alt={i.imageUrl} src={user.avatar} />
-      <img
-        style={{ maxWidth: 600, margin: 10 }}
-        // width={600}
-        alt={url}
-        src={url}
-      />
+      <img style={{ maxWidth: 600, margin: 10 }} alt={url} src={url} />
     ) : (
       <Box>No Image</Box>
     );
@@ -118,7 +109,6 @@ const Home = () => {
           <div
             style={{ display: "flex" }}
             onClick={() => {
-              console.log("onLike: ", post);
               post && post.id && handleLike(post?.id);
             }}
           >
@@ -181,7 +171,6 @@ const Home = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("Home Error: ", error);
       openModal("error", {
         title: "Server Error",
         text: "Please Check you server",
@@ -191,8 +180,6 @@ const Home = () => {
       setLoading(false);
     }
   }, [error, users, user, setError]);
-
-  // return <Box>App</Box>;
 
   return error ? (
     <Box>Error</Box>
@@ -210,24 +197,12 @@ const Home = () => {
         <Box sx={styles.posts_wrapper}>
           {sorted.length > 0 ? (
             sorted.map((i) => (
-              <div
-                key={i.id}
-                style={{
-                  display: "flex",
-                  border: "1px solid #d3d3d3",
-                  // margin: 10,
-                  flexDirection: "column",
-                  borderRadius: 5,
-                  padding: 5,
-                  marginBottom: "5px",
-                  // boxShadow: " 0.5px 0.5px 0.5px",
-                }}
-              >
+              <Box sx={styles.post} key={i.id}>
                 <PostHeader post={i} />
                 {i.imageUrl && <PostImage url={i.imageUrl} />}
                 <Box sx={{ margin: "10px" }}>{i.content}</Box>
                 <PostTools post={i} />
-              </div>
+              </Box>
             ))
           ) : (
             <Box>No Posts yet...</Box>

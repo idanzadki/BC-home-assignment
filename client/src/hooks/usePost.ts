@@ -16,9 +16,7 @@ export const usePost = ({ user, error, onError }: { user?: UserData | null, erro
             return posts
 
         } catch (error) {
-            console.log('Get Posts Error: ', error);
             onError && onError
-            // openModal('error', { title: 'Server Error', text: 'Please Check you server' })
             return false
         }
 
@@ -49,7 +47,6 @@ export const usePost = ({ user, error, onError }: { user?: UserData | null, erro
         if (post) {
             const res = await deletePost(post)
             if (res) {
-                console.log('d: ', res);
                 setPosts(res)
                 closeModal()
             }
@@ -58,11 +55,8 @@ export const usePost = ({ user, error, onError }: { user?: UserData | null, erro
 
 
     const handleUpdatePost = useCallback(async (update: PostData) => {
-        console.log('Update: ', update);
-
         const res: PostData[] = await updatePost(update)
         if (res) {
-            console.log(' Update Res: ', res.find(i => i.id === update.id));
             setPosts(res)
             closeModal()
         }

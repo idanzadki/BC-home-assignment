@@ -11,11 +11,9 @@ export const getAllUsers = async () => {
             return res && res
         }
     } catch (error) {
-        console.log('Get Users Service Error: ', error);
         throw error
 
     }
-    // console.log('Res: ', res);
 
 }
 

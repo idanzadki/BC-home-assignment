@@ -3,7 +3,6 @@ import { Box, Button, Card, Input } from "@mui/material";
 import { PostData, UserData } from "../../types";
 import { useModal } from "../modal";
 import "./styles.css";
-import { Image } from "@mui/icons-material";
 
 export const PostEditor = ({
   post = {
@@ -47,10 +46,6 @@ export const PostEditor = ({
     [setContent]
   );
 
-  useEffect(() => {
-    console.log("post: ", post);
-  }, []);
-
   return (
     <Box sx={{ direction: "ltr" }}>
       {/* <Box sx={{ border: "1px solid black" }}>{user?.id || "No User"}</Box> */}
@@ -61,16 +56,29 @@ export const PostEditor = ({
             height: 400,
             maxWidth: 400,
             margin: "10px",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           {imgPreview ? (
-            <img
-              style={{ height: 400, width: 400 }}
-              src={imgUrl}
-              alt={"Post Image"}
-            />
+            <Box
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {imgUrl.length > 0 ? (
+                <img
+                  style={{ height: 400, width: 400 }}
+                  src={imgUrl}
+                  alt={"Post Image"}
+                />
+              ) : (
+                <Box sx={{ textAlign: "" }}>No Image</Box>
+              )}
+            </Box>
           ) : (
-            <Box />
+            <Box>Press On Preview</Box>
           )}
         </Card>
 
@@ -110,6 +118,11 @@ export const PostEditor = ({
         onChange={handleContent}
         value={content}
       />
+      {post.updated_at && (
+        <Box>
+          Last Modified: {new Date(post.updated_at).toLocaleDateString()}
+        </Box>
+      )}
       <Button
         onClick={() => {
           if (user) {
@@ -127,86 +140,4 @@ export const PostEditor = ({
       </Button>
     </Box>
   );
-
-  // return (
-  //   <div
-  //     style={{
-  //       display: "flex",
-  //       flex: 1,
-  //       flexDirection: "column",
-  //       alignItems: "center",
-  //       direction: "rtl",
-  //     }}
-  //   >
-  //     {post ? (
-  //       <div>
-  //         <h2>{new Date(post?.date || "").toLocaleDateString()}</h2>
-  //       </div>
-  //     ) : (
-  //       <div>Create New Post</div>
-  //     )}
-
-  //     <div
-  //       style={{
-  //         padding: "10px",
-  //       }}
-  //     >
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           flexDirection: "column",
-  //           background: "white",
-  //           border: "1px solid black",
-  //           marginTop: "10px",
-  //           height: "auto",
-  //           width: "100%",
-  //           minWidth: "300px",
-  //           maxWidth: "800px",
-  //           borderRadius: "15px",
-  //           boxShadow: "1px 4px 9px",
-  //         }}
-  //       >
-  //         <textarea
-  //           style={{
-  //             background: "none",
-  //             resize: "none",
-  //             direction: "rtl",
-  //             width: "100%",
-  //             height: "300px",
-  //             // border: "none",
-  //             padding: "20px",
-  //             border: "1px solid black",
-  //           }}
-  //           onChange={(val) => {
-  //             console.log(val.currentTarget.value);
-  //             setMyText(val.currentTarget.value);
-  //           }}
-  //           value={myText}
-  //         />
-  //       </div>
-  //     </div>
-  //     <Button
-  //       onClick={() => {
-  //         let newPost: PostData;
-  //         if (post) {
-  //           newPost = {
-  //             ...post,
-  //             content: myText,
-  //             userId: user?.id,
-  //             date: new Date().toString(),
-  //           };
-  //         } else {
-  //           newPost = {
-  //             content: myText,
-  //             userId: user?.id,
-  //             date: new Date().toString(),
-  //           };
-  //         }
-  //         onSubmit && onSubmit(newPost);
-  //       }}
-  //     >
-  //       Save
-  //     </Button>
-  //   </div>
-  // );
 };

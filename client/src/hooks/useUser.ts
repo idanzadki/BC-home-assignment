@@ -8,9 +8,7 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
     const [users, setUsers] = useState<UserData[] | null>(null);
     const [tempUsers, setTempUsers] = useState<UserData[] | null>(null);
     const [userId, setUserId] = useState<number>(-1);
-
     const user = useMemo(() => tempUsers && tempUsers.find(i => i.id === userId) || null, [tempUsers, userId])
-
     const tempList = useMemo(() => tempUsers && tempUsers.filter(i => i.id !== user?.id) || null, [tempUsers])
     const { openModal, closeModal } = useModal();
 
@@ -23,7 +21,6 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
             const ob = users[rand]
 
             if (users) {
-
                 setUsers(users)
                 setTempUsers(users)
                 setUserId(ob.id)
@@ -32,11 +29,9 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
 
 
         } catch (error) {
-            console.log('Get Users Error: ', error);
             onError(error)
             setTempUsers(null)
             return false
-            // throw error
         }
 
     }, [setUsers, setTempUsers, setUserId, onError, error])
@@ -47,17 +42,19 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
         if (tempList && tempList.length > 0) {
             const randomIdx = Math.floor(tempList.length * Math.random() || 0)
             const randomId = tempList[randomIdx].id
-
             setUserId(randomId)
             setTempUsers(tempList)
+            return true
         }
-        else {
+        else if (users) {
+
             const randomIdx = Math.floor(users.length * Math.random() || 0)
             const randomId = users[randomIdx].id
-
             setTempUsers(users)
             setUserId(randomId)
+            return true
         }
+        return false
 
     }, [tempList, users, setTempUsers, setUserId])
 
@@ -65,11 +62,7 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
 
 
     useEffect(() => {
-        console.log('useUser: ', users);
-        console.log('useUser Error: ', error);
-
         if (!error && !users) {
-            console.log('Getting users: ', error);
             handleGetUsers()
         }
     }, [error, users])

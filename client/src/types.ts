@@ -3,6 +3,7 @@ export type PostData = {
   userId: number;
   content: string;
   date: string;
+  updated_at?: string
   imageUrl?: string;
   likes?: number[]
 };
