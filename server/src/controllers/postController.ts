@@ -1,6 +1,8 @@
+import { Request, Response } from "express";
+
 import { readAllPosts } from "../services/postServices";
 
-export const getAllPosts = (req: any, res: any) => {
+export const getAllPosts = (req: Request, res: Response) => {
 
     readAllPosts((cbRes) => {
 

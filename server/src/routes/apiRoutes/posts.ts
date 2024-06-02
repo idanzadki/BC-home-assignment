@@ -4,12 +4,7 @@ import { addNewPost, allPosts, deletePost, updatePost } from "../../services/pos
 
 export const postRouter = Router()
 
-postRouter.get("/", allPosts);
-
-
-postRouter.post("/api/posts", addNewPost);
-
-postRouter.put("/api/posts", updatePost);
-
-
-postRouter.delete("/api/deletePost/:id", deletePost);
+postRouter.get("/", allPosts)
+    .post("/", addNewPost)
+    .put("/", updatePost)
+    .delete("/delete/:id", deletePost);

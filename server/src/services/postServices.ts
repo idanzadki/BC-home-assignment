@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { readFile, writeFile } from "fs";
 import path from "path";
 
@@ -10,17 +11,17 @@ export const readAllPosts = (cb: (user: any[]) => void) => {
     });
 };
 
-export const allPosts = (req: any, res: any) => {
+export const allPosts = (req: Request, res: Response) => readAllPosts((cbRes) => {
 
-    readAllPosts((cbRes) => {
+    res.send(cbRes);
+    return cbRes
+})
 
-        res.send(cbRes);
-        return cbRes
-    })
-}
 
-export const addNewPost = (req: any, res: any) => {
+export const addNewPost = (req: Request, res: Response) => {
     let post = req.body
+    console.log('Post: ', post);
+
 
     try {
 
@@ -52,29 +53,19 @@ export const addNewPost = (req: any, res: any) => {
     }
 }
 
-export const updatePost = (req: any, res: any) => {
-    const post = req.body
+export const updatePost = (req: Request, res: Response) => {
+    let post = req.body
+    console.log('Update: ', post);
+
     try {
         readAllPosts((posts: any[]) => {
+            const old = posts.find(i => `${i.id}` === `${post.id}`)
+            console.log('Old: ', old);
 
-            let id = posts.length + 1
-            const t = posts.map(i => i.id)
-            console.log('t: ', t);
-            const postMax = Math.max(...t)
-            console.log('id: ', postMax);
-            id = Math.max(id, postMax)
-            if (id === postMax) {
-                id += 1
-            }
-            // console.log('new Id: ', id, postMax);
-            const n = { ...post, id }
-            const add = [...posts, n]
-
-
-            writeFile(p, JSON.stringify(add), (saveRes) => {
-                console.log('Save Res: ', saveRes);
-                res.send(add)
-            });
+            const up = { ...old, ...post }
+            const upList = posts.map(i => i.id === up.id ? up : i)
+            writeFile(p, JSON.stringify(upList), cb => { })
+            res.send(upList)
         })
 
     } catch (error) {
@@ -82,12 +73,13 @@ export const updatePost = (req: any, res: any) => {
     }
 }
 
-export const deletePost = (req: any, res: any) => {
+export const deletePost = (req: Request, res: Response) => {
     const post = req.params
+    console.log('Del: ', post);
+
     try {
         readAllPosts((posts: any[]) => {
             const fil = posts.filter(i => `${i.id}` !== `${post.id}`)
-            let p = path.join(__dirname.replace('src', ''), "/db/posts.json");
             writeFile(p, JSON.stringify(fil), cb => { })
             res.send(fil)
         })

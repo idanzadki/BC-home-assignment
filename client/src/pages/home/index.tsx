@@ -11,6 +11,7 @@ import { Delete, Edit, ThumbUp } from "@mui/icons-material";
 
 const Home = () => {
   const [error, setError] = useState<boolean | string>(false);
+  const [loading, setLoading] = useState<boolean | string>(true);
   const { users = false, user, handleSwitchUser } = useUser();
   const {
     handleAddPost,
@@ -163,10 +164,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (!users) {
-      setError("No Users");
-    } else if (error) {
-      console.log("Main Arror");
+    if (user) {
+      const u = setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      return () => clearTimeout(u);
     }
   }, [error, users, user, setError]);
 
@@ -178,8 +180,8 @@ const Home = () => {
         handleAddPost(post);
       }}
     >
-      {error ? (
-        <Box>Error {error}</Box>
+      {loading ? (
+        <Box>Loading...</Box>
       ) : (
         <Box sx={styles.posts_wrapper}>
           {sorted.length > 0 ? (
@@ -188,16 +190,18 @@ const Home = () => {
                 key={i.id}
                 style={{
                   display: "flex",
-                  // border: "1px solid black",
-                  margin: 10,
+                  border: "1px solid #d3d3d3",
+                  // margin: 10,
                   flexDirection: "column",
                   borderRadius: 5,
-                  boxShadow: " 0.5px 0.5px 0.5px",
+                  padding: 5,
+                  marginBottom: "5px",
+                  // boxShadow: " 0.5px 0.5px 0.5px",
                 }}
               >
                 <PostHeader post={i} />
                 {i.imageUrl && <PostImage url={i.imageUrl} />}
-                <Box>{i.content}</Box>
+                <Box sx={{ margin: "10px" }}>{i.content}</Box>
                 <PostTools post={i} />
               </div>
             ))

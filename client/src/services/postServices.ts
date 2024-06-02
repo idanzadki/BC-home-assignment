@@ -34,7 +34,7 @@ export const addNewPost = async (post: Omit<PostData, 'id'>) => {
 }
 export const deletePost = async (post: PostData) => {
 
-    const res = await fetch("http://127.0.0.1:3000/api/deletePost/" + post.id, {
+    const res = await fetch("http://127.0.0.1:3000/api/posts/delete/" + post.id, {
         method: "delete",
         headers: {
             "Content-Type": "application/json",

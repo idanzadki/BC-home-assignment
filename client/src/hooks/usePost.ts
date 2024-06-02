@@ -46,9 +46,8 @@ export const usePost = (user?: UserData | null) => {
     const handleDeletePost = useCallback(async (post?: PostData) => {
         if (post) {
             const res = await deletePost(post)
-            // console.log('d: ', res);
-            res && setPosts(res)
             if (res) {
+                console.log('d: ', res);
                 setPosts(res)
                 closeModal()
             }

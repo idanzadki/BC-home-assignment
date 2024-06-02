@@ -1,4 +1,4 @@
 export const styles = {
     home: {},
-    posts_wrapper: {}
+    posts_wrapper: { margin: '5px' }
 }
