@@ -22,17 +22,19 @@ export const Layout = ({
 
   return (
     <Box>
-      <Header
-        user={user}
-        onSubmit={onNewPost}
-        onSwitchUser={onSwitchUser}
-        // openPostEditor={() => {
-        //   console.log("Open Editor");
-        //   openModal("default", {
-        //     children: <PostEditor user={user} />,
-        //   });
-        // }}
-      />
+      {user && (
+        <Header
+          user={user}
+          onSubmit={onNewPost}
+          onSwitchUser={onSwitchUser}
+          // openPostEditor={() => {
+          //   console.log("Open Editor");
+          //   openModal("default", {
+          //     children: <PostEditor user={user} />,
+          //   });
+          // }}
+        />
+      )}
       {children}
     </Box>
   );

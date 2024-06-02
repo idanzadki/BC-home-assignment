@@ -3,7 +3,7 @@ import { useModal } from "../components/modal";
 import { PostData, UserData } from "../types";
 import { addNewPost, deletePost, getAllPosts, updatePost } from "../services/postServices";
 
-export const usePost = (user?: UserData | null) => {
+export const usePost = ({ user, error, onError }: { user?: UserData | null, error?: boolean, onError?: () => void }) => {
 
     const [posts, setPosts] = useState<PostData[]>([]);
     const { openModal, closeModal } = useModal();
@@ -17,6 +17,8 @@ export const usePost = (user?: UserData | null) => {
 
         } catch (error) {
             console.log('Get Posts Error: ', error);
+            onError && onError
+            // openModal('error', { title: 'Server Error', text: 'Please Check you server' })
             return false
         }
 
@@ -87,6 +89,7 @@ export const usePost = (user?: UserData | null) => {
 
 
     useEffect(() => {
+
         handleGetPosts()
     }, [])
 

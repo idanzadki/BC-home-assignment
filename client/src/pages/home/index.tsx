@@ -10,16 +10,32 @@ import { PostData } from "../../types";
 import { Delete, Edit, ThumbUp } from "@mui/icons-material";
 
 const Home = () => {
-  const [error, setError] = useState<boolean | string>(false);
+  const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean | string>(true);
-  const { users = false, user, handleSwitchUser } = useUser();
+  const {
+    users = false,
+    user,
+    handleSwitchUser,
+  } = useUser({
+    error,
+    onError: (error) => {
+      console.log("Users Error: ", error);
+      setError(true);
+    },
+  });
   const {
     handleAddPost,
     handleLike,
     handleDeletePost,
     handleUpdatePost,
     posts,
-  } = usePost(user);
+  } = usePost({
+    user,
+    error,
+    onError: () => {
+      setError(true);
+    },
+  });
   const { openModal } = useModal();
 
   const sorted = useMemo(() => {
@@ -164,15 +180,23 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (error) {
+      console.log("Home Error: ", error);
+      openModal("error", {
+        title: "Server Error",
+        text: "Please Check you server",
+      });
+    }
     if (user) {
-      const u = setTimeout(() => {
-        setLoading(false);
-      }, 500);
-      return () => clearTimeout(u);
+      setLoading(false);
     }
   }, [error, users, user, setError]);
 
-  return (
+  // return <Box>App</Box>;
+
+  return error ? (
+    <Box>Error</Box>
+  ) : (
     <Layout
       user={user}
       onSwitchUser={handleSwitchUser}
@@ -180,7 +204,7 @@ const Home = () => {
         handleAddPost(post);
       }}
     >
-      {loading ? (
+      {loading && !error ? (
         <Box>Loading...</Box>
       ) : (
         <Box sx={styles.posts_wrapper}>
