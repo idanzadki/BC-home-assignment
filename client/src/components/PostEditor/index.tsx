@@ -47,15 +47,13 @@ export const PostEditor = ({
       {post.updated_at && <Box>Modified at: {dateParser(post.updated_at)}</Box>}
       <Button
         onClick={() => {
-          if (user) {
-            onSubmit &&
-              onSubmit({
-                ...post,
-                userId: user?.id,
-                content,
-                imageUrl: imgUrl,
-              });
-          }
+          onSubmit &&
+            onSubmit({
+              ...post,
+              // userId: user?.id,
+              content,
+              imageUrl: imgUrl,
+            });
         }}
       >
         {post.id > 0 ? "Update" : "Create"}

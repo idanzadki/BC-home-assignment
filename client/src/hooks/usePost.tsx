@@ -118,6 +118,8 @@ export const usePost = ({
             user={user}
             post={update}
             onSubmit={async (post) => {
+              console.log("Update: ", post);
+
               const res: PostData[] = await updatePost(post);
               if (res) {
                 setPosts(res);
