@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { UserData } from "../types";
 import { getAllUsers } from "../services/userServices";
-import { useModal } from "../components/modal";
 
 export const useUser = ({ onError, error }: { onError: (error: any) => void, error: boolean }) => {
 
@@ -10,7 +9,6 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
     const [userId, setUserId] = useState<number>(-1);
     const user = useMemo(() => tempUsers && tempUsers.find(i => i.id === userId) || null, [tempUsers, userId])
     const tempList = useMemo(() => tempUsers && tempUsers.filter(i => i.id !== user?.id) || null, [tempUsers])
-    const { openModal, closeModal } = useModal();
 
 
     const handleGetUsers = useCallback(async () => {
@@ -57,9 +55,6 @@ export const useUser = ({ onError, error }: { onError: (error: any) => void, err
         return false
 
     }, [tempList, users, setTempUsers, setUserId])
-
-
-
 
     useEffect(() => {
         if (!error && !users) {

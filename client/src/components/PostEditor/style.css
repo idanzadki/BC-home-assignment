@@ -1,0 +1,9 @@
+.post-content {
+  width: 400px;
+  height: 300px;
+  resize: none;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
